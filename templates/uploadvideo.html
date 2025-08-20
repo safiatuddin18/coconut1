@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Upload Video</title>
+    <style>
+      /* Latar belakang full-screen */
+      body {
+        margin: 0;
+        padding: 0;
+        background: url("/static/img/a.jpg") no-repeat center center fixed;
+        background-size: cover;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #fff;
+      }
+
+      /* Kontainer form */
+      .upload-container {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        width: 300px;
+      }
+
+      .upload-container h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #f0f0f0;
+      }
+
+      input[type="file"] {
+        margin: 10px 0;
+        padding: 10px;
+        background: #fff;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        cursor: pointer;
+      }
+
+      input[type="submit"] {
+        margin-top: 15px;
+        padding: 10px;
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        background-color: #28a745;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #218838;
+      }
+
+      /* Tombol navigasi */
+      .btn-nav {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+      }
+
+      .btn-nav:hover {
+        background-color: #0056b3;
+      }
+
+      .btn-danger {
+        background-color: #dc3545;
+      }
+
+      .btn-danger:hover {
+        background-color: #c82333;
+      }
+
+      @media (max-width: 400px) {
+        .upload-container {
+          width: 90%;
+          padding: 30px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="upload-container">
+      <h1>Upload Video Kelapa</h1>
+      <form method="post" enctype="multipart/form-data">
+        <input type="file" name="video" accept="video/mp4" required />
+        <input type="submit" value="Upload & Proses" />
+      </form>
+
+      <!-- Tambahan di bawah form -->
+      <div id="progress-container" style="display: none; margin-top: 20px">
+        <p>Sedang memproses video...</p>
+        <div
+          style="background-color: #444; border-radius: 10px; overflow: hidden"
+        >
+          <div
+            id="progress-bar"
+            style="
+              width: 0%;
+              background-color: #28a745;
+              height: 20px;
+              transition: width 0.3s;
+            "
+          ></div>
+        </div>
+        <p id="progress-text">0%</p>
+      </div>
+
+      <script>
+        const form = document.querySelector("form");
+        const progressContainer = document.getElementById("progress-container");
+        const progressBar = document.getElementById("progress-bar");
+        const progressText = document.getElementById("progress-text");
+
+        form.addEventListener("submit", function (e) {
+          progressContainer.style.display = "block";
+
+          let progress = 0;
+          const interval = setInterval(() => {
+            if (progress < 95) {
+              // Simulasi maksimal 95% agar tidak selesai duluan
+              progress += Math.random() * 5;
+              progress = Math.min(progress, 95);
+              progressBar.style.width = progress + "%";
+              progressText.textContent = Math.floor(progress) + "%";
+            }
+          }, 300);
+
+          // Setelah halaman submit dan redirect, hentikan interval (opsional via unload)
+          window.addEventListener("beforeunload", () => {
+            clearInterval(interval);
+          });
+        });
+      </script>
+
+      <!-- Tombol navigasi -->
+      <a href="/" class="btn-nav btn-danger">← Kembali</a>
+      <br /><br />
+      <a href="/riwayatvideo" class="btn-nav">📜 Lihat Riwayat Video</a>
+    </div>
+  </body>
+</html>

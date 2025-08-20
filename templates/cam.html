@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>-Coconut Deepsort-</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background-color: #000;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #video-container {
+        position: relative;
+        width: 480px;
+        height: 640px;
+        background-color: black;
+        overflow: hidden;
+        border: 4px solid #ccc;
+        border-radius: 12px;
+      }
+
+      #video-feed {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      #overlay {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: white;
+        font-size: 20px;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 8px 16px;
+        border-radius: 8px;
+      }
+
+      #controls {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      button {
+        padding: 10px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="video-container">
+      <img id="video-feed" src="{{ url_for('video') }}" alt="Camera Feed" />
+      <div id="overlay">Kelapa Keluar: <span id="coconut-count">0</span></div>
+    </div>
+
+    <div id="controls">
+      <button onclick="goBack()">🔙 Back</button>
+      <button onclick="resetCounts()">♻️ Reset</button>
+      <button onclick="saveCounts()">💾 Save</button>
+      <button onclick="toggleFullScreen()">📺 Full Screen</button>
+    </div>
+
+    <script>
+      function updateCounts(coconutOut) {
+        document.getElementById("coconut-count").innerText = coconutOut;
+      }
+
+      function resetCounts() {
+        fetch("/reset_counts", { method: "POST" }).then((response) => {
+          if (response.ok) updateCounts(0);
+        });
+      }
+
+      function saveCounts() {
+        fetch("/save_counts", { method: "POST" }).then((response) => {
+          if (response.ok) alert("Counts saved!");
+        });
+      }
+
+      function fetchCounts() {
+        fetch("/get_counts")
+          .then((response) => response.json())
+          .then((data) => updateCounts(data.coconut_out));
+      }
+
+      function goBack() {
+        window.history.back();
+      }
+
+      function toggleFullScreen() {
+        const container = document.getElementById("video-container");
+        if (!document.fullscreenElement) {
+          container.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
+      }
+
+      setInterval(fetchCounts, 1000);
+    </script>
+  </body>
+</html>

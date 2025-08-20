@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Riwayat Video Deteksi Kelapa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+        font-family: "Segoe UI", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+      h1 {
+        text-align: center;
+        color: #1a237e;
+        margin-top: 32px;
+        margin-bottom: 32px;
+        letter-spacing: 1px;
+        font-weight: 800;
+        font-size: 2.2em;
+        text-shadow: 0 2px 8px #b3c6e0;
+      }
+      .video-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 32px;
+        padding: 0 0 32px 0;
+        list-style: none;
+        margin: 0;
+      }
+      .video-card {
+        background: linear-gradient(120deg, #f8fafc 60%, #e3f0ff 100%);
+        border-radius: 20px;
+        box-shadow: 0 6px 24px rgba(60, 60, 120, 0.13);
+        padding: 28px 28px 20px 28px;
+        width: 340px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: box-shadow 0.2s, transform 0.2s;
+        border: 1.5px solid #e0eafc;
+        position: relative;
+      }
+      .video-card:hover {
+        box-shadow: 0 12px 36px rgba(60, 60, 120, 0.22);
+        transform: translateY(-4px) scale(1.025);
+      }
+      .video-card strong {
+        color: #1976d2;
+        font-size: 1.13em;
+        margin-bottom: 10px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 4px #e3f0ff;
+      }
+      .video-actions {
+        margin-top: 12px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      .download-btn {
+        padding: 10px 28px;
+        border-radius: 10px;
+        border: none;
+        font-size: 1.08em;
+        font-weight: 600;
+        cursor: pointer;
+        background: linear-gradient(90deg, #00c3ff, #ffff1c);
+        color: #222;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        box-shadow: 0 2px 8px rgba(60, 60, 120, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        outline: none;
+        border: 1.5px solid #b3e5fc;
+      }
+      .download-btn:hover {
+        background: linear-gradient(90deg, #ffff1c, #00c3ff);
+        color: #1a237e;
+        box-shadow: 0 4px 16px rgba(60, 60, 120, 0.18);
+        border: 1.5px solid #1976d2;
+      }
+      .no-videos {
+        text-align: center;
+        color: #888;
+        font-size: 1.15em;
+        margin-top: 48px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      }
+      .back-btn {
+        display: block;
+        margin: 48px auto 0 auto;
+        padding: 14px 38px;
+        background: linear-gradient(90deg, #00c3ff, #ffff1c);
+        color: #222;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.13em;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(60, 60, 120, 0.1);
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        letter-spacing: 0.5px;
+      }
+      .back-btn:hover {
+        background: linear-gradient(90deg, #ffff1c, #00c3ff);
+        color: #1a237e;
+        box-shadow: 0 4px 16px rgba(60, 60, 120, 0.18);
+      }
+      @media (max-width: 600px) {
+        .video-card {
+          width: 95vw;
+          padding: 18px 6vw 16px 6vw;
+        }
+        .video-list {
+          gap: 18px;
+        }
+        h1 {
+          font-size: 1.3em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Riwayat Video yang Telah Diproses</h1>
+    {% if videos %}
+    <ul class="video-list">
+      {% for video in videos %}
+      <li class="video-card">
+        <strong>{{ video.timestamp }}</strong>
+        <div class="video-actions">
+          <a
+            class="download-btn"
+            href="{{ url_for('static', filename='processed/' ~ video.filename) }}"
+            download
+          >
+            <span style="font-size: 1.3em">⬇️</span> Unduh
+          </a>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="no-videos">Belum ada video yang diproses.</p>
+    {% endif %}
+    <button class="back-btn" onclick="window.location.href='/uploadvideo'">
+      Kembali ke Upload
+    </button>
+  </body>
+</html>
